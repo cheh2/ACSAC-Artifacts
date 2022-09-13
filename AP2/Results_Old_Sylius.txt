@@ -1,0 +1,74 @@
+@checkout
+Feature: Prevent starting checkout with empty cart
+    In order to proceed through the checkout correctly
+    As a Customer
+    I want to be prevented from accessing checkout with empty cart
+
+  Background:
+    Given the store operates on a single channel in "United States"
+
+  @ui
+  Scenario: Being on shop home page after trying to start checkout addressing step with empty cart
+    When I try to open checkout addressing page
+    Then I should be redirected to my cart summary page
+
+  @ui
+  Scenario: Being on shop home page after trying to start checkout shipping step with empty cart
+    When I try to open checkout shipping page
+    Then I should be redirected to my cart summary page
+
+@checkout
+Feature: Seeing detailed shipping fee on order summary page
+    In order to aware of shipping fee applied for my shipment
+    As a Customer
+    I want to be able to see detailed shipping fee
+
+  Background:
+    Given the store operates on a single channel in "United States"
+    And the store has a product "The Sorting Hat" priced at "$19.99"
+    And the store has a product "No-Face god" priced at "$19.99"
+    And the store allows paying offline
+    And I am a logged in customer
+
+  @ui
+  Scenario: Seeing the shipping fee per shipment on order summary
+    Given the store has "UPS" shipping method with "$20.00" fee
+    And I have product "The Sorting Hat" in the cart
+    When I specified the shipping address as "Ankh Morpork", "Frost Alley", "90210", "United States" for "Jon Snow"
+    Then I should be on the checkout shipping step
+    And I should see shipping method "UPS" with fee "$20.00"
+
+@checkout
+Feature: Seeing detailed shipping fee on order summary page
+    In order to aware of shipping fee applied for my shipment
+    As a Customer
+    I want to be able to see detailed shipping fee
+
+  Background:
+    Given the store operates on a single channel in "United States"
+    And the store has a product "The Sorting Hat" priced at "$19.99"
+    And the store has a product "No-Face god" priced at "$19.99"
+    And the store allows paying offline
+    And I am a logged in customer
+
+  @ui
+  Scenario: Seeing the shipping fee per shipment on order summary
+    Given the store has "UPS" shipping method with "$20.00" fee
+    When I specified the shipping address as "Ankh Morpork", "Frost Alley", "90210", "United States" for "Jon Snow"
+      Could not open the page: "http://localhost:8080/checkout/address". Received an error status code: 500 (Sylius\Behat\Page\UnexpectedPageException)
+    Then I should be on the checkout shipping step
+    And I should see shipping method "UPS" with fee "$20.00"
+
+--- Failed scenarios:
+
+    features/test_remove_product_our.feature:15
+
+4 scenarios (1 passed, 1 failed, 2 undefined)
+25 steps (18 passed, 1 failed, 4 undefined, 2 skipped)
+0m8.21s (71.18Mb)
+
+--- Snippets for the following steps in the ui_checkout suite were not generated (does your context implement SnippetAcceptingContext interface?):
+
+    When I try to open checkout addressing page
+    Then I should be redirected to my cart summary page
+    When I try to open checkout shipping page
